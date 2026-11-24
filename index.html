@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZALDI AI - Radar Tren HP</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090e1b;color:#f4f7ff;font-family:Arial,sans-serif}
+header{padding:24px 18px;background:linear-gradient(135deg,#101d39,#142e55);border-bottom:1px solid #29466d}
+.logo{color:#57d7ff;font-size:13px;font-weight:bold;letter-spacing:3px}
+h1{font-size:27px;margin:12px 0 6px}
+header p,.muted{color:#aebbd1;font-size:13px;line-height:1.6}
+main{padding:18px;max-width:760px;margin:auto}
+.panel{background:#121d31;border:1px solid #263b5b;border-radius:15px;padding:17px;margin-bottom:16px}
+h2{font-size:17px;margin:0 0 12px}
+input,select{width:100%;padding:13px;border:1px solid #344b6b;background:#0c1526;color:white;border-radius:9px;margin:6px 0 12px;font-size:14px}
+button{border:0;border-radius:10px;padding:13px;background:#19b9e8;color:#061421;font-weight:bold;font-size:14px;width:100%;cursor:pointer}
+button.secondary{background:#263c5d;color:white}
+.result{padding:13px;border:1px solid #2b4160;border-radius:11px;margin-top:10px;background:#0d1729}
+.tag{font-size:11px;color:#60dcff}
+footer{text-align:center;padding:25px;color:#8292aa;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">ZALDI AI • DIGITAL COMPANY</div>
+<h1>RADAR TREN HP</h1>
+<p>Pusat riset peluang affiliate smartphone Indonesia.</p>
+</header>
+<main>
+<section class="panel">
+<h2>Temukan tren HP hari ini</h2>
+<p class="muted">Pilih platform untuk menyiapkan pencarian produk.</p>
+<select id="platform">
+<option value="TikTok Shop dan Shopee">TikTok Shop + Shopee</option>
+<option value="TikTok Shop">TikTok Shop</option>
+<option value="Shopee">Shopee</option>
+</select>
+<input id="keyword" placeholder="Contoh: HP gaming, POCO, Samsung">
+<button onclick="searchTrend()">Cari Tren HP</button>
+</section>
+<section class="panel">
+<h2>Hasil riset</h2>
+<div id="results" class="muted">Belum ada pencarian. Masukkan kata kunci terlebih dahulu.</div>
+</section>
+<section class="panel">
+<h2>Asisten pembuat konten</h2>
+<p class="muted">Siapkan perintah untuk membuat konten affiliate dari HP pilihanmu.</p>
+<input id="product" placeholder="Masukkan nama HP">
+<button class="secondary" onclick="makeContent()">Buat ide konten</button>
+</section>
+</main>
+<footer>ZALDI AI • Created by Zainudin Al Hadi</footer>
+<script>
+function searchTrend(){
+ const p=document.getElementById('platform').value;
+ const k=document.getElementById('keyword').value.trim();
+ if(!k){alert('Masukkan kata kunci HP terlebih dahulu.');return;}
+ document.getElementById('results').innerHTML=
+ '<div class="result"><div class="tag">PENCARIAN DISIAPKAN</div><h3>'+escapeText(k)+'</h3><p>Sumber pilihan: '+p+'</p><p>Website ini belum terhubung ke data penjualan atau pencarian langsung marketplace. Hasil aktual perlu diverifikasi dari sumber yang tersedia.</p><button onclick="copyResearch()">Salin perintah riset</button></div>';
+ window.currentResearch='Riset tren smartphone Indonesia untuk kata kunci '+k+'. Bandingkan TikTok Shop dan Shopee. Cari data publik terbaru tentang minat pencarian, penjualan, harga, dan komisi affiliate. Cantumkan sumber dan tanggal. Jangan mengarang data.';
+}
+function makeContent(){
+ const k=document.getElementById('product').value.trim();
+ if(!k){alert('Masukkan nama HP terlebih dahulu.');return;}
+ const t='Buat konten affiliate smartphone '+k+'. Buat 3 hook, naskah video, CTA, caption, hashtag, dan ide visual. Gunakan klaim produk yang bisa diverifikasi.';
+ if(navigator.clipboard){navigator.clipboard.writeText(t).then(()=>alert('Perintah konten berhasil disalin.')).catch(()=>alert(t));}
+ else alert(t);
+}
+function copyResearch(){
+ if(window.currentResearch && navigator.clipboard){
+ navigator.clipboard.writeText(window.currentResearch).then(()=>alert('Perintah riset disalin.'));
+ }else{alert(window.currentResearch||'Belum ada perintah.');}
+}
+function escapeText(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+</script>
+</body>
+</html>
