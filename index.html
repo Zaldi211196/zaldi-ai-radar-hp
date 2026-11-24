@@ -54,14 +54,56 @@ footer{text-align:center;padding:25px;color:#8292aa;font-size:12px}
 </main>
 <footer>ZALDI AI • Created by Zainudin Al Hadi</footer>
 <script>
-function searchTrend(){
- const p=document.getElementById('platform').value;
- const k=document.getElementById('keyword').value.trim();
- if(!k){alert('Masukkan kata kunci HP terlebih dahulu.');return;}
- document.getElementById('results').innerHTML=
- '<div class="result"><div class="tag">PENCARIAN DISIAPKAN</div><h3>'+escapeText(k)+'</h3><p>Sumber pilihan: '+p+'</p><p>Website ini belum terhubung ke data penjualan atau pencarian langsung marketplace. Hasil aktual perlu diverifikasi dari sumber yang tersedia.</p><button onclick="copyResearch()">Salin perintah riset</button></div>';
- window.currentResearch='Riset tren smartphone Indonesia untuk kata kunci '+k+'. Bandingkan TikTok Shop dan Shopee. Cari data publik terbaru tentang minat pencarian, penjualan, harga, dan komisi affiliate. Cantumkan sumber dan tanggal. Jangan mengarang data.';
+
+async function searchTrend() {
+  const p = document.getElementById('platform').value;
+  const k = document.getElementById('keyword').value.trim();
+  const results = document.getElementById('results');
+
+  if (!k) {
+    alert('Masukkan kata kunci HP terlebih dahulu.');
+    return;
+  }
+
+  results.innerHTML = '<div class="result"><h3>ZALDI AI sedang menganalisis...</h3><p>Tunggu sebentar bro.</p></div>';
+
+  try {
+    const response = await fetch(
+      'https://zaldi-ai-radar.alhadizainudin.workers.dev',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          question:
+            'Analisis smartphone Indonesia untuk platform ' + p +
+            '. Kata kunci: ' + k +
+            '. Berikan rekomendasi riset affiliate, faktor minat pembeli, kisaran harga jika diketahui, dan ide konten. Jangan mengarang data penjualan, pencarian, harga, atau komisi. Tandai data yang belum terverifikasi.'
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Terjadi kesalahan.');
+    }
+
+    results.innerHTML =
+      '<div class="result"><div class="tag">HASIL ANALISIS ZALDI AI</div><h3>' +
+      escapeText(k) + '</h3><p>' +
+      escapeText(data.answer || 'Belum ada jawaban.') +
+      '</p></div>';
+
+  } catch (error) {
+    results.innerHTML =
+      '<div class="result"><h3>Belum berhasil</h3><p>' +
+      escapeText(error.message) +
+      '</p><p>Periksa koneksi Worker dan coba lagi.</p></div>';
+  }
 }
+
 function makeContent(){
  const k=document.getElementById('product').value.trim();
  if(!k){alert('Masukkan nama HP terlebih dahulu.');return;}
