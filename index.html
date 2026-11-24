@@ -87,8 +87,10 @@ async function searchTrend() {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error || 'Terjadi kesalahan.');
-    }
+      throw new Error(
+  (data.error || 'Terjadi kesalahan.') +
+  ' Detail: ' + (data.detail || 'Tidak tersedia')
+);
 
     results.innerHTML =
       '<div class="result"><div class="tag">HASIL ANALISIS ZALDI AI</div><h3>' +
